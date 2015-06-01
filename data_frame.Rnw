@@ -1,0 +1,60 @@
+\documentclass{article}
+
+\begin{document}
+There are many statistical packages available (STATA, SAS, SPSS, MPLUS, R, JUMP, Minitab, etc.).  Each of them consists of a collection of programs that operate on a common data structure that is specific to that package.
+\par\vspace{0.3 cm}
+The common data structure in R is called a \textbf{data frame}.  
+\par\vspace{0.3 cm}
+A data frame can be thought of as a table with named columns, each with the same number of rows.
+\par\vspace{0.3 cm}
+We will construct a simple data frame by first creating the columns then using the data frame constructor function \texttt{data.frame()} to combine them into a data frame.
+\par\vspace{0.3 cm}
+The first column will be a sequence number.  We'll set it up with 50 rows.  There is a function for creating sequences in R (you can discover it with a google search on "R how to create a sequence").
+\par\vspace{0.3 cm}
+R is a very large system and contains thousands of functions, and a search engine like google is very useful for discovering them if you can search on a description of what you want R to do.
+\par\vspace{0.3 cm}
+So first we create a sequence of numbers from 1 to 50 with the following R code:
+<<>>=
+C1 = seq(1,50)
+@
+You can discover the structure of an R object with the \texttt{str()} function:
+<<>>=
+str(C1)
+@
+R objects belong to \textit{classes} and most classes have a \texttt{print()} function.
+<<>>=
+print(C1)
+@
+In some caes, you can print an object by just typing its name on the command line:
+<<>>=
+C1
+@
+\texttt{C1} will be the first column of our data frame.  The next column will be 50 independent random variables with a normal distribution having a mean or expected value of 100 and a standard deviation of 15:
+<<>>=
+C2=rnorm(50,100,15)
+print(C2)
+@
+The \texttt{rnorm()} function will generate a different set of values each time it is called.
+\par\vspace{0.3 cm}
+Lastly, the third column will consist of 25 ones, followed by 25 twos.  We will use the R \texttt{rep()} function, which replicates a value a certain number of times, and the \texttt{c()} function, which concatenates objects:
+<<>>=
+C3=c(rep(1,25),rep(2,25))
+print(C3)
+@
+Finally, we use the \texttt{data.frame()} function to create a data frame called \texttt{df1}:
+<<>>=
+df1 = data.frame(C1,C2,C3)
+@
+We can use the structure function \texttt{str()} to display the structure of the data frame:
+<<>>=
+str(df1)
+@
+\par\vspace{0.3 cm}
+Exercise: Write a short R program using rstudio that creates a data frame with 100 rows such that:
+\begin{itemize}
+\item The first column is a sequence of numbers from 1 to 100
+\item The second column contains 100 independent random variables having a binomial distribution with 10 trials (n=10) and probability of success p=0.4.
+\item The third column contains 100 independent random variables with a uniform(0,1) distribution.
+\end{itemize}
+
+\end{document}
