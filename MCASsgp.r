@@ -9,6 +9,7 @@ source("MCAS_polytomous.r") #function to compute polytomous scores
 source("MCAS_raw2scaled.r") #function to compute scaled scores
 #
 theta=read_abilities(1)      #read the 1,000 student file
+sample_file="sample1"
 str(theta)
 nstu = length(theta)         #get the count of students
 #
@@ -71,3 +72,14 @@ colnames(MCAS_wide)=c("ID","GRADE_2009","GRADE_2010","GRADE_2011","GRADE_2012",
                       "SS_2012","SS_2013")
 str(MCAS_wide)
 summary(MCAS_wide)
+#
+library(SGP)
+MCAS_sgp<- studentGrowthPercentiles(panel.data=MCAS_wide,
+                                    sgp.labels=list(my.year=2013, my.subject="Mathematics"),
+                                    grade.progression=c(3,4,5,6,7))
+#
+MCASsgp=cbind(MCAS_wide,MCAS_sgp$SGPercentiles$MATHEMATICS.2013$SGP,theta)
+#
+fname=paste("SGPdata_",sample_file,"_",format(Sys.time(),'%m%d%Y%H%M%S'),".Rdata",sep="")
+save(MCASsgp,file=fname)
+str(MCASsgp)
