@@ -13,7 +13,7 @@ str(theta)
 nstu = length(theta)         #get the count of students
 #
 #Convert the normal ability parameters to percentiles
-quant=100*round(qnorm(theta),digits=2)        #convert abilities to percentiles
+quant=100*round(pnorm(theta),digits=2)        #convert abilities to percentiles
 #
 #Define the number of years to simulate
 years=7
