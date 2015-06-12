@@ -4,6 +4,22 @@
 # Parameters: 
 #     1.  seed for random number generator
 #     2.  ability parameter file name (minus the .Rdata extension)
+#
+# Python driver.py call:
+#
+#     python driver.py niter experiment1 abilities
+#
+#     where:    niter  is the number of iterations to run
+#               abilities  is the name of the abilities paramter file to use (minus the .Rdata extension)
+#
+#    Example:  perform 10 iterations using sample1.Rdata as the abilities file:
+#
+#              python driver.py 10 experiment1 sample1
+#
+#    Example:  perform 200 iterations using sample70.Rdata as the abilities file:
+#
+#              python driver.py 200 experiment1 sample70
+#
 ##########################################################################################################
 library(SGP)
 library(SGPdata)

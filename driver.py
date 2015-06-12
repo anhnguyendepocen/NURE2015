@@ -1,4 +1,23 @@
+###############################################################################################
 # -*- coding: utf-8 -*-
+# driver.py    python driver code for R simulations
+#
+# Usage:
+#
+# python driver.py niter program parm1 parm2 .....  parmk
+#
+#  where:
+#
+#     niter     is the number of iterations to run
+#     program   is the name of the R program (minus the .r extension)
+#     parm1     the first parameter passed to the R program
+#     parm2     the second parameter passed to the R program
+#    
+#     parmk     the kth parameter passed to the R program
+#
+# save commands in the R programs will reference a subdirectory whose name matches the program name (minus the .r extension)
+#
+################################################################################################
 """
 Created on Wed Jun 10 2015
 
