@@ -1,0 +1,77 @@
+\documentclass{article}
+
+\begin{document}
+\section*{Working with R lists and and vectors}
+\subsection*{Initial abilities vector and vector of adjustments}
+Start with a vector of standard normal random variables:
+<<>>=
+N=30
+theta=rnorm(N)
+theta
+@
+Now we want to construct a vector of effect size adjustments for each group of three consecutive theta values:
+\begin{itemize}
+\item Increase the first theta by the effect size
+\item Leave the second theta value of the second unchanges
+\item Decrease the third theta by the effect size
+\end{itemize}
+\par\vspace{0.3 cm}
+We will use 0.2 for a small effect size, 0.5 for medium, and 0.8 for large.
+<<>>=
+effect_size=0.2               #small effect size
+@
+\subsection*{Constructing a list with the concatenation operator}
+R has a handy constructor for lists which behave like arrays. The syntax is:
+\par\vspace{0.3 cm}
+\texttt{c(item\_1,item\_2,\ldots,item\_n)}
+\par\vspace{0.3 cm}
+Because R is object-oriented, the items don't have to be numbers or characters, they can be any object.  In this case, we will use numbers.
+\par\vspace{0.3 cm}
+The list we want to construct is \texttt{[effect\_size,0,-effect\_size]}, and the code to do that is:
+<<>>=
+c(effect_size,0,-effect_size)
+@
+Because we didn't assign it to a variable name, R will just compute it and print it.
+\subsection*{Repeating a pattern}
+Another very useful function in R is the replication function \texttt{rep}.  The syntax is:
+\par\vspace{0.3 cm}
+\texttt{rep(something,count)}
+\par\vspace{0.3 cm}
+which produces a list with "something" replicated "count" times.  For example,
+<<>>=
+rep(5,7)
+@
+\subsection*{Combining the concatenation and repetition functions}
+We can use the \texttt{rep()} and \texttt{c()} functions together to generate our vector of effect size adjustments.  
+\par\vspace{0.3 cm}
+We want the same pattern of three values to repeat for a list whose length equals that of \texttt{theta}.
+\par\vspace{0.3 cm}
+The code for this is quite simple:
+<<>>=
+rep(c(effect_size,0,-effect_size),N/3)
+@
+One of the nice things about the R language is that you can combine list, vectors, and scalars in a single expression.  If an expression contains some scalars and some vectors, R assumes you want to evaluate it for every element of the vector.
+\par\vspace{0.3 cm}
+This eliminates the need to write tedious and error-prone \texttt{for} loops in many cases.  
+\par\vspace{0.3 cm}
+
+<<>>=
+adj=rep(c(effect_size,0,-effect_size),N/3)
+adj
+@
+Now compute the probabilities of a correct answer for a dichotomous question from its IRT parameters:
+<<>>=
+a=1.1
+b=0.3
+c=0.4
+D=1.1701
+p=c+(1-c)*exp(D*a*(theta-b))/(1+exp(D*a*(theta-b)))
+p
+@
+Finally compute the adjusted probabilities, where we adjust the ability parameters using the vector of adjustments called \texttt{adj}:
+<<>>=
+padj=c+(1-c)*exp(D*a*(theta+adj-b))/(1+exp(D*a*(theta+adj-b)))
+padj
+@
+
+\end{document}
