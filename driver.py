@@ -17,6 +17,8 @@
 #
 # save commands in the R programs will reference a subdirectory whose name matches the program name (minus the .r extension)
 #
+# 6/16/2015  Added shell=True to subprocess statement that calls the R program (needed for windows)
+#
 ################################################################################################
 """
 Created on Wed Jun 10 2015
