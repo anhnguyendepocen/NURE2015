@@ -1,0 +1,29 @@
+\documentclass{article}
+
+\begin{document}
+R-style code to adjust theta values
+/par/vspace{0.3 cm}
+\begin{itemize}
+\item Use the concatenation function \texttt{c()}to produce the list \texttt{(0.2,0,-0.2)}
+\item Use the replication function \texttt{rep()} to replicate this into a vector at least as long as the vector of abilities
+\item Use the indexing operator \texttt{[a:b]} to adjust the length to match the vector of abilities
+\end{itemize}
+\par\vspace{0.3 cm}
+First load a vector of ability (theta) values:
+<<>>=
+load("Rdata/sample1.Rdata")                          #load thetas$theta
+str(thetas$theta)
+@
+Generate the vector of adjustments:
+<<>>=
+adj_theta=rep(c(0.2,0,-0.2),1+length(thetas$theta)/3)[1:length(thetas$theta)]
+str(adj_theta)
+@
+Finally compute the new abilities by adding the adjustments to the original abilities:
+<<>>=
+theta2=thetas$theta+adj_theta
+str(theta2)
+@
+
+
+\end{document}
