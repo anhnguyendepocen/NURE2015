@@ -1,0 +1,72 @@
+\documentclass{article}
+
+\begin{document}
+<<>>=
+rm(list=ls())
+@
+<<>>=
+mcas<-function(grad,yr,sub,abilities){
+  load("IRT_parms.Rdata")
+#dichotomous
+  df<-subset(IRT_parms, grade==grad & year==yr & subj==sub & dichot & scoring)
+  print(df[,1:9])
+  s=rep(0,length(abilities))
+  for (i in 1:nrow(df)){
+    p = df$c[[i]]+(1-df$c[[i]])*(exp(df$D[[i]]*df$a[[i]]*(abilities-df$b[[i]])))/(1+exp(df$D[[i]]*df$a[[i]]*(abilities-df$b[[i]])))
+    s=s+rbinom(length(abilities),1,p)
+  }
+#polychotomous
+  df<-subset(IRT_parms, grade==grad & year==yr & subj==sub & !dichot & scoring)
+  print(df[,1:9])
+  for (i in 1:nrow(df)){
+    cut0=exp(df$D*df$a*(abilities-df$b+df$d0))/(1+exp(df$D*df$a*(abilities-df$b+df$d0)))
+    cut1=exp(df$D*df$a*(abilities-df$b+df$d1))/(1+exp(df$D*df$a*(abilities-df$b+df$d1)))
+    cut2=rep(0,length(abilities))
+    cut3=rep(0,length(abilities))
+    if (grad!="3"){
+      cut2=exp(df$D*df$a*(abilities-df$b+df$d2))/(1+exp(df$D*df$a*(abilities-df$b+df$d2)))
+      cut3=exp(df$D*df$a*(abilities-df$b+df$d3))/(1+exp(df$D*df$a*(abilities-df$b+df$d3)))
+    }
+    u=runif(length(abilities))
+    s=s+ifelse(u>1-cut0,1,0)+ifelse(u>1-cut1,1,0)+ifelse(u>1-cut2,1,0)+ifelse(u>1-cut3,1,0)
+  }
+#raw to scaled
+  load("R2S.Rdata")
+  df<-subset(R2S, grade==grad)
+  r2s=R2S$scaled
+  scaled=r2s[s+1]
+  return(scaled)
+}
+@
+<<>>=
+sample_file="sample70"
+sfname=paste("Rdata/",sample_file,".Rdata",sep="")
+load("Rdata/sample70.Rdata")
+ls()
+nstu=length(thetas$theta)
+IDcol=1:nstu
+GRADE_2009=rep(3,nstu)
+GRADE_2010=rep(4,nstu)
+SS_2009=mcas('3',"2011","MTH",thetas$theta)
+table(SS_2009)
+SS_2010=mcas('4',"2011","MTH",thetas$theta)
+table(SS_2010)
+MCAS_wide=data.frame(IDcol,GRADE_2009,GRADE_2010,SS_2009,SS_2010)
+colnames(MCAS_wide)=c("ID","GRADE_2009","GRADE_2010","SS_2009","SS_2010")
+str(MCAS_wide)
+summary(MCAS_wide)
+library(SGP)
+#MCAS_sgp<- studentGrowthPercentiles_EQ(panel.data=MCAS_wide,
+MCAS_sgp<- studentGrowthPercentiles(panel.data=MCAS_wide,
+                sgp.labels=list(my.year=2010, my.subject="Mathematics"),
+                grade.progression=c(3,4),
+                parallel.config=list(BACKEND="FOREACH", 
+                TYPE="doParallel", WORKERS=5))
+#
+MCASsgp=cbind(MCAS_wide,MCAS_sgp$SGPercentiles$MATHEMATICS.2010$SGP,thetas$theta)
+#
+fname=paste("Rdata/MCAS_newsgp_2YR_",sample_file,"_",format(Sys.time(),'%m%d%Y%H%M%S'),".Rdata",sep="")
+save(MCAS_sgp,file=fname)
+str(MCAS_sgp)
+@
+\end{document}
