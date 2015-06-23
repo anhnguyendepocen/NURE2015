@@ -1,5 +1,5 @@
 ###########################################################################################################
-# experiment1.r
+# experiment1w.r   windows version
 #
 # Parameters: 
 #     1.  seed for random number generator
@@ -7,18 +7,18 @@
 #
 # Python driver.py call:
 #
-#     python driver.py niter experiment1 abilities
+#     python driverw.py niter experiment1w abilities
 #
 #     where:    niter  is the number of iterations to run
 #               abilities  is the name of the abilities paramter file to use (minus the .Rdata extension)
 #
 #    Example:  perform 10 iterations using sample1.Rdata as the abilities file:
 #
-#              python driver.py 10 experiment1 sample1
+#              python driverw.py 10 experiment1w sample1
 #
 #    Example:  perform 200 iterations using sample70.Rdata as the abilities file:
 #
-#              python driver.py 200 experiment1 sample70
+#              python driverw.py 200 experiment1w sample70
 #
 ##########################################################################################################
 library(SGP)
