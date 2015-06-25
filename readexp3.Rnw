@@ -1,0 +1,39 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
+rm(list=ls())
+getwd()
+files=list.files("experiment3")
+str(files)
+n=length(files)
+print(n)
+#files
+for (i in 1:n){
+  fname=paste("experiment3/",files[[i]],sep="")
+  load(fname)
+  ls()
+  if(i==1){
+    df=data.frame(rep(c(1,2,3),1+nrow(MCAS_sgp$Panel_Data)/3)[1:nrow(MCAS_sgp$Panel_Data)])
+    colnames(df)=c("levels")
+  }
+  df=cbind(df,MCAS_sgp$SGPercentiles$MATHEMATICS.2010$SGP)
+}
+str(df)
+means=apply(df[,2:ncol(df)],1,mean)
+sds=apply(df[,2:ncol(df)],1,sd)
+levels=as.factor(rep(c(1,2,3),1+length(means)/3))[1:length(means)]
+df2=data.frame(levels,means,sds)
+str(df2)
+dfs=split(df2,df2$levels)
+mean(dfs[[1]]$means)
+sd(dfs[[1]]$means)
+mean(dfs[[2]]$means)
+sd(dfs[[2]]$means)
+mean(dfs[[3]]$means)
+sd(dfs[[3]]$means)
+@
+
+
+\end{document}
