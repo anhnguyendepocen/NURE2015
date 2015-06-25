@@ -4,12 +4,12 @@
 
 <<>>=
 rm(list=ls())                                       #clear work area
-files=list.files("experiment3")                     #list files in target subdirectory
+files=list.files("experiment5")                     #list files in target subdirectory
 n=length(files)                                     #count of files 
 print(n)
 #
 for (i in 1:n){                                     #read each file and extract SGP values
-  fname=paste("experiment3/",files[[i]],sep="")     #file to load
+  fname=paste("experiment5/",files[[i]],sep="")     #file to load
   load(fname)
   if(i==1){                                         #initialize data frame with column of levels
     df=data.frame(rep(c(1,2,3),1+nrow(MCAS_sgp$Panel_Data)/3)[1:nrow(MCAS_sgp$Panel_Data)])
