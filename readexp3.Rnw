@@ -3,36 +3,33 @@
 \begin{document}
 
 <<>>=
-rm(list=ls())
-getwd()
-files=list.files("experiment3")
-str(files)
-n=length(files)
+rm(list=ls())                                       #clear work area
+files=list.files("experiment3")                     #list files in target subdirectory
+n=length(files)                                     #count of files 
 print(n)
-#files
-for (i in 1:n){
-  fname=paste("experiment3/",files[[i]],sep="")
+#
+for (i in 1:n){                                     #read each file and extract SGP values
+  fname=paste("experiment3/",files[[i]],sep="")     #file to load
   load(fname)
-  ls()
-  if(i==1){
+  if(i==1){                                         #initialize data frame with column of levels
     df=data.frame(rep(c(1,2,3),1+nrow(MCAS_sgp$Panel_Data)/3)[1:nrow(MCAS_sgp$Panel_Data)])
     colnames(df)=c("levels")
   }
-  df=cbind(df,MCAS_sgp$SGPercentiles$MATHEMATICS.2010$SGP)
+  df=cbind(df,MCAS_sgp$SGPercentiles$MATHEMATICS.2010$SGP)   #add column for SGP values
 }
-str(df)
-means=apply(df[,2:ncol(df)],1,mean)
-sds=apply(df[,2:ncol(df)],1,sd)
-levels=as.factor(rep(c(1,2,3),1+length(means)/3))[1:length(means)]
-df2=data.frame(levels,means,sds)
-str(df2)
-dfs=split(df2,df2$levels)
-mean(dfs[[1]]$means)
-sd(dfs[[1]]$means)
-mean(dfs[[2]]$means)
-sd(dfs[[2]]$means)
-mean(dfs[[3]]$means)
-sd(dfs[[3]]$means)
+str(df)                                             #show structure of data frame
+means=apply(df[,2:ncol(df)],1,mean)                 #compute vector of row means
+sds=apply(df[,2:ncol(df)],1,sd)                     #compute vector of row standard deviations 
+levels=as.factor(rep(c(1,2,3),1+length(means)/3))[1:length(means)]   #vector of levels for means data frame
+df2=data.frame(levels,means,sds)                    #data frame for means and standard deviations
+str(df2)                          
+dfs=split(df2,df2$levels)                           #split by level
+mean(dfs[[1]]$means)                                #mean of level 1 growth percentiles
+sd(dfs[[1]]$means)                                  #sd of level 1 growth percentiles
+mean(dfs[[2]]$means)                                #mean of level 2 growth percentiles
+sd(dfs[[2]]$means)                                  #sd of level 2 growth percentiles
+mean(dfs[[3]]$means)                                #mean of level 3 growth percentiles
+sd(dfs[[3]]$means)                                  #sd of level 3 growth percentiles
 @
 
 
