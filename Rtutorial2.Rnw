@@ -1,0 +1,36 @@
+\documentclass{article}
+
+\begin{document}
+\section*{Working with R lists and and vectors}
+\subsection*{Initial abilities vector and vector of adjustments}
+Start with a vector of standard normal random variables:
+<<>>=
+dscore<-function(a,b,c,D,theta){
+  p=c+(1-c)*exp(D*a*(theta-b))/(1+exp(D*a*(theta-b)))
+  return(rbinom(length(p),1,p)) 
+}
+@
+Data frame for parameters:
+<<>>=
+a=c(0.6,0.5,0.4)
+b=c(1.0, 0.8,1.2)
+c=c(0.5, 0.7, 0.8)
+D=rep(1.701,3)
+df1=data.frame(a,b,c,D)
+str(df1)
+nrow(df1)
+@
+Ability parameters
+<<>>=
+theta=rnorm(10)
+@
+Compute scores
+<<>>=
+scores=rep(0,length(theta))
+for (i in 1:nrow(df1)){
+  scores=scores+dscore(df1$a[[i]],df1$b[[i]],df1$c[[i]],df1$D[[i]],theta)
+}
+print(scores)
+@  
+
+\end{document}
