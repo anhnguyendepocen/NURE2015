@@ -61,9 +61,9 @@ library(SGP)
 #MCAS_sgp<- studentGrowthPercentiles_EQ(panel.data=MCAS_wide,
 MCAS_sgp<- studentGrowthPercentiles(panel.data=MCAS_wide,
                                     sgp.labels=list(my.year=2010, my.subject="Mathematics"),
-                                    grade.progression=c(3,4),
-                                    parallel.config=list(BACKEND="FOREACH", 
-                                    TYPE="doParallel", WORKERS=5))
+                                    grade.progression=c(3,4))
+                                    #parallel.config=list(BACKEND="FOREACH", 
+                                    #TYPE="doParallel", WORKERS=5))
 #
 fname=paste(dname,"/",dname,"_",sample_file,"_",format(Sys.time(),'%m%d%Y%H%M%S'),".Rdata",sep="")
 save(MCAS_sgp,file=fname)
