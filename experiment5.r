@@ -1,5 +1,5 @@
 ###########################################################################################################
-# experiment4.r
+# experiment5.r
 #
 # Parameters: 
 #     1.  seed for random number generator
