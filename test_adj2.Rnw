@@ -54,8 +54,8 @@ and the corresponding $\theta_i$ value will be:
 \]
 The fact that R is so forgiving of expressions that mix arrays and constants makes this very easy to code:
 <<>>=
-x=1:70000                       #generate 70,000 equally spaced numbers
-p=x/70001                       #scale them into the open interval (0,1) 
+i=1:70000                       #generate 70,000 equally spaced numbers
+p=i/70001                       #scale them into the open interval (0,1) 
 theta=qnorm(p)                  #compute the corresponding theta values
 str(theta)                      #display a bit of the result
 @
