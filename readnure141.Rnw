@@ -37,11 +37,11 @@ Now we have a data frame with a row for each "student" (theta value) and a colum
 
 R allows us to easily compute a new column that is the mean of the SGP scores in a row (i.e., the mean SGP for that student over all of the replications).   This produces a vector of 70,000 means, one for each "student":
 <<>>=
-means=apply(df[,2:ncol(df)],1,mean)                 #compute vector of row means
+means=apply(df[,2:ncol(df)],1,mean)   #compute vector of row means exclude first column
 @
 We can do the same for the standard deviation of the SGP scores:
 <<>>=
-sds=apply(df[,2:ncol(df)],1,sd)                     #compute vector of row standard deviations 
+sds=apply(df[,2:ncol(df)],1,sd)       #compute vector of row standard deviations exclude first col 
 @
 Now we want to plot the results with ggplot2.  Ggplot2 requires you to supply the data to be plotted in the form of a data frame, so we have to build one.
 
