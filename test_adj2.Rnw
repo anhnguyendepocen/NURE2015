@@ -50,9 +50,9 @@ p_i = \frac{i}{70001},\quad i=1,2,\ldots,70000
 \]
 and the corresponding $\theta_i$ value will be:
 \[
-\theta_i = qnorm(p_i)
+\theta_i = \mbox{qnorm}(p_i)
 \]
-The fact that R is so fogiving of expressions that mix arrays and constants makes this very easy to code:
+The fact that R is so forgiving of expressions that mix arrays and constants makes this very easy to code:
 <<>>=
 x=1:70000                       #generate 70,000 equally spaced numbers
 p=x/70001                       #scale them into the open interval (0,1) 
