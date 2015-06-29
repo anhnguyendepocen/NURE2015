@@ -48,10 +48,14 @@ ls()
 IDcol=1:nstu
 GRADE_2009=rep(3,nstu)
 GRADE_2010=rep(4,nstu)
-SS_2009=mcas('3',"2011","MTH",thetas$theta)
+rdf=mcas('3',"2011","MTH",thetas$theta)
+ori=rdf[rdf[,1]==0]    #scaled score has item number in column 1 = 0
+SS_2009=ori[2:length(ori)]  
 table(SS_2009)
 adjtheta=thetas$theta+rep(c(0.2,0,-0.2),1+nstu/3)[1:nstu]
-SS_2010=mcas('4',"2011","MTH",adjtheta)
+rdf=mcas('4',"2011","MTH",adjtheta)
+ori=rdf[rdf[,1]==0]    #scaled score has item number in column 1 = 0
+SS_2010=ori[2:length(ori)]  
 table(SS_2010)
 MCAS_wide=data.frame(IDcol,GRADE_2009,GRADE_2010,SS_2009,SS_2010)
 colnames(MCAS_wide)=c("ID","GRADE_2009","GRADE_2010","SS_2009","SS_2010")
