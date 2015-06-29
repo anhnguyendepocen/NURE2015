@@ -1,3 +1,19 @@
+####################################################################################################
+#  mcas.r      creates a data frame of simulated MCAS results
+#
+#  caller specifies the grade, year, and subject and supplies a vector of ability values
+#
+#  parameters:
+#              grad      grade (3,4,5,6,7,8, or 10)
+#              yr        year of the IRT model  (i.e., 2011)
+#              sub       subject  (i.e.  MTH)
+#              abilities vector of theta values representing students
+#
+#  returns:    a dataframe containing one row for each scored item plus a row of scaled scores
+#
+#              the first column has the MCAS item number for scored items, zero for scaled scores
+#
+###################################################################################################
 mcas<-function(grad,yr,sub,abilities){
   load("IRT_parms.Rdata")
   #dichotomous
