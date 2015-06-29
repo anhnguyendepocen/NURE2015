@@ -6,6 +6,7 @@
 rm(list=ls())                                       #clear work area
 files=list.files("experiment3")                     #list files in target subdirectory
 n=length(files)                                     #count of files 
+n=2
 print(n)
 #
 for (i in 1:n){                                     #read each file and extract SGP values
@@ -31,6 +32,21 @@ sd(dfs[[2]]$means)                                  #sd of level 2 growth percen
 mean(dfs[[3]]$means)                                #mean of level 3 growth percentiles
 sd(dfs[[3]]$means)                                  #sd of level 3 growth percentiles
 @
-
+<<>>=
+library(ggplot2)
+load("Rdata/samplen70.Rdata")
+theta=thetas$theta
+df3=cbind(df2,theta)
+p=ggplot(df2,aes(x=theta,y=means))
+p+geom_point(color=levels,size=0.5)
+@
+<<>>=
+library(ggplot2)
+load("Rdata/samplen70.Rdata")
+theta=thetas$theta
+df3=cbind(df2,theta)
+p=ggplot(df2,aes(x=theta,y=sds))
+p+geom_point(color=levels,size=0.5)
+@
 
 \end{document}
