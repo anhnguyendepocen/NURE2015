@@ -1,0 +1,66 @@
+\documentclass{article}
+
+\begin{document}
+Clear the workspace:
+<<>>=
+rm(list=ls())                                       #clear work area
+@
+Specify the target subdirectory:
+<<>>=
+datadir="grade3twice"
+@
+Read the 70k equally spaced normal abilities file:
+<<>>=
+load("Rdata/samplen70.Rdata")
+ls()
+@
+Read the names of the files in the target subdirectory into a list:
+<<>>=
+files=list.files(datadir)                           #list files in target subdirectory
+n=length(files)                                     #count of files 
+print(n)
+@
+Read the files from the target directory and extract the growth scores (SGP), constructing a new dataframe with one column for the growth scores in each file: 
+<<>>=
+for (i in 1:n){                                     #read each file and extract SGP values
+  fname=paste(datadir,"/",files[[i]],sep="")     #file to load
+  load(fname)
+  if(i==1){                                         #initialize data frame with column of levels
+    df=data.frame(seq(1,nrow(MCAS_sgp$Panel_Data)))
+    colnames(df)=c("ID")
+  }
+  df=cbind(df,MCAS_sgp$SGPercentiles$MATHEMATICS.2010$SGP)   #add column for SGP values
+}
+str(df)    
+@
+Now we have a data frame with a row for each "student" (theta value) and a column for each replication (file).  
+
+R allows us to easily compute a new column that is the mean of the SGP scores in a row (i.e., the mean SGP for that student over all of the replications).   This produces a vector of 70,000 means, one for each "student":
+<<>>=
+means=apply(df[,2:ncol(df)],1,mean)   #compute vector of row means exclude first column
+@
+We can do the same for the standard deviation of the SGP scores:
+<<>>=
+sds=apply(df[,2:ncol(df)],1,sd)       #compute vector of row standard deviations exclude first col 
+@
+Now we want to plot the results with ggplot2.  Ggplot2 requires you to supply the data to be plotted in the form of a data frame, so we have to build one.
+
+We'll put the ability parameter $\theta$ on the horizontal axis.  Our data frame has to include any variables we use in the plot, so we have to have the thetas as well as the means and standard deviations:
+<<>>=
+theta=thetas$theta
+gdf=data.frame(theta,means,sds)
+@
+Now that we have the data in the form ggplot2 requires, we can plot the means as a function of theta:
+<<>>=
+library(ggplot2)
+p=ggplot(gdf,aes(x=theta,y=means))
+p+geom_point(size=0.8)
+@
+Next, plot the standard deviations as a function of theta:
+<<>>=
+library(ggplot2)
+p=ggplot(gdf,aes(x=theta,y=sds))
+p+geom_point(size=0.8)
+@
+
+\end{document}
