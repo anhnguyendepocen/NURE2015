@@ -1,0 +1,140 @@
+\documentclass[reqno,12pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\theoremstyle{plain}    
+\newtheorem{thm}{Theorem}
+\numberwithin{equation}{section} %% Comment out for sequentially-numbered
+\numberwithin{figure}{section} %% Comment out for sequentially-numbered
+\theoremstyle{remark}    
+\newtheorem{claim}{Claim}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem*{theorema*}{Theorem A}
+\newtheorem*{theoremb*}{Theorem B}
+\newtheorem*{theoremc*}{Theorem C}
+\newtheorem*{theorem1*}{Theorem 1}
+\newtheorem*{theorem2*}{Theorem 2}
+\newtheorem*{lemma}{Lemma}
+\newtheorem{openprob}{Open Problem}
+
+\makeatother
+
+\begin{document}
+\vspace{3 cm}
+\begin{center}
+\textbf{Operational Characteristics of Student Growth Percentiles Computed from the Massachusetts Common Assessment (MCAS)}
+\end{center}
+\vspace{1 cm}
+
+\begin{center}
+J.DIMMICK, E.QUINN$^{}$\footnote[1]{Corresponding author. email: equinn1@stonehill.edu}, A.SORACI, and M.YARMALOVICZ
+\end{center}
+\begin{center}
+\par\vspace{0.2 cm}
+\small
+Stonehill College
+\linebreak
+Easton, Massachusetts, USA  
+\end{center}
+
+\begin{center}
+\par\vspace{1 cm}
+July 28th, 2015
+\par\vspace{1 cm}
+\end{center}
+
+\indent{\small{ABSTRACT: We use the Item Response Theory (IRT) model for the Massachusetts Common Assessment (MCAS) test as a data generating process in a simulation study to examine the behavior of aggregated Student Growth Percentile (SGP) scores.}}
+
+\noindent
+\normalsize
+
+\par\vspace{7.5 cm}
+
+\pagebreak 
+\par\vspace{0.3 cm}
+
+\section{Introduction}
+The push for "accountability" in education and the use of concepts like "Adequate Yearly Progress" towards this end has produced a surge of interest in methods of tracking student achievement using a series of measures taken over the course of a chilld's education.
+\par\vspace{0.3 cm}
+Compared to the Item Response Theory (IRT) approach to modeling psychometric measurement, the application of longitudinal "growth" models to the measurement of educational progress is relatively immature.  This is evidenced by the numerous methods that have been proposed and the existence of federally funded "pilot programs" designed to spur development of these methods.  
+\par\vspace{0.3 cm}
+The issues of validity and reliability are significantly more complicated with these measures than with individual standardized tests.  Factors like mobility of students between schools and the effects of family background produce variation in student achievement, yet teachers and schools have little control over these and cannot be held accountable for them \cite{ccsso1}.  Separating the effects of factors educators have control over from those they do not is a very thorny problem.     
+\par\vspace{0.3 cm}
+It is generally acknowledged that more research on these measures is needed, and this paper is motivated by that fact.
+\section{The Colorado or Student Growth Percentile Model}
+While there is not a consensus on which of the many proposed methods of determining student "growth", a number of states have adopted the Student Growth Percentile (SGP) model developed by Colorado as part of a federally funded pilot program.  
+\par\vspace{0.3 cm}
+This is due in part to a number of desirable theoretical properties this measure possesses, such as invariance to monotonic changes in scale, robustness to outliers, and lack of correlation with prior achievement \cite{bb3}.  Another reason is the availability of free open-source software in the form of the SGP package for the R statistical system \cite{bb2}.   
+\par\vspace{0.3 cm}
+The SGP software takes a longitudinal record of scores from suitable standardized tests over as many as five separate years and uses it to compute the Student Growth Percentile, a single value, for each student. 
+\par\vspace{0.3 cm}
+State departments of education typically describe the scores for an individual student as the change in the student's achievement compared to students with a similar history on statewide assessments.  The Massachusetts Department of Education website contains an implementation brief titled "Using Student Growth Percentiles" \cite{mdoe1} that states:
+\par\vspace{0.3 cm}
+\textit{"Massachusetts measures growth for an individual student by comparing the change in his or her achievement on statewide assessments (e.g. MCAS, PARCC) to that of all other students in the state who had
+similar historical statewide assessment results (the student's "academic peers")"}.
+\par\vspace{0.3 cm}
+Results of the SGP growth model for individual students are made available to educators and parents through a website.
+\par\vspace{0.3 cm}
+We will focus on the SGP model with the Massachusetts Common Assessment (MCAS) mathematics test as the underlying standardized test. 
+\vspace{0.4cm}
+\section{Motivation and Objectives}
+Student Growth Percentiles are used by many states to evaluate the educational progress of students and the quality of teachers and schools.  The computation of these measures is very complicated and so it is important that their operating characteristics be well understood given the high stakes.    
+\par\vspace{0.3 cm}
+The SGP method is not specific to any one test, but is designed to be applied to a longitudinal history of scores from any underlying standardized test.  In this case, the underlying test is the MCAS mathmatics exam. 
+\par\vspace{0.3 cm}
+A closer examination of the SGP calculation is provided on page 5 of the SGP Technical Overview \cite{bb3}:
+\par\vspace{0.3 cm}
+\textit{"Specifically, for each grade by subject cohort, quantile
+regression is used to establish 100 (1 for each percentile) curvi-linear functional relationships between
+the students grade 3, grade 4, grade 5, and grade 6 prior scores and their grade 7 scores. 4 The result
+of these 100 separate analyses is a single coefficient matrix that can be employed as a look-up table
+relating prior student achievement to current achievement for each percentile."}   
+\par\vspace{0.3 cm}
+So, depending on the student's scaled score on the current year's test, one of 100 quantile regression models is selected.  The percentile corresponding to the model with the largest predicted scaled score that does not exceed the student's scaled score for the current year is defined as the Student Growth Percentile for that student. 
+\par\vspace{0.3 cm}
+Any change in the current scaled score will result in a different quantile regression model being used.  Furthermore, the computations for even a single student require the scores for the entire grade cohort (70,000 students).  
+\par\vspace{0.3 cm}
+
+We find it troubling that the end result of this complicated process is often presented with no measure of its uncertainty. 
+\par\vspace{0.3 cm}
+Our objective in this study is to use simulation to estimate the variability of the SGP measures, using the Iterm Response Theory (IRT) model from the Massachusetts Comprehensive Assessment System (MCAS) as the data generating process in a hypothetical zero growth scenario.
+\par\vspace{0.3 cm}
+
+\section{The Data Generating Process}
+
+For a given simulated student, their ability parameter ($\theta$) together with the item response theory (IRT) parameters for each question determines the conditional probabilities of every possible answer on the MCAS given that value of $\theta$. We used these probabilities to simulate the results of repeatedly examining the same student, which is the basis of our variance estimate. 
+\par\vspace{0.3 cm}
+The IRT parameter values we used were from the Massachusetts Department of Elementary and Secondary Education's 2011 MCAS and MCAS-Alt Techincal Report \cite{mctr}.  Tables of parameter values for the mathematics test appear in Appendix H of this document.  
+\par\vspace{0.3 cm}
+Our intent is not to exactly replicate a particular group of student MCAS scores, but to generate a reasonable surrogate that can be used to model various growth scenarios.  With that said, IRT models generally replicate the actual total score distributions well, and that is all the SGP uses \cite{dnt1}.
+
+\par\vspace{0.3 cm}
+
+\begin{thebibliography}{99}
+
+\bibitem{bb1} Betebener, D. W. (2009), Growth, Standards, and Accountability, The Center for Assessment.
+\vspace{0.5 cm}  
+\bibitem{bb2} Betebenner, D. W., \& Iwaarden, A. V. (2011). SGP: An textupR package for the calculation and
+visualization of student growth percentiles [Computer software manual]. 
+\vspace{0.5 cm}  
+\bibitem{bb3} Betebenner, D. W. (2011), A Technical Overview of the Student Growth Percentile Methodology: Student Growth Percentiles and Percentile Growth Projections/Trajectories, The National Center for the Improvement of Educational Assessment
+\vspace{0.5 cm}  
+\bibitem{dnt1} Davey, T., Nering, M., and Thompson, T.(1997), Realistic Simulation of Item Response Data, ACT Research Report Series
+\vspace{0.5 cm}  
+\bibitem{mdoe1} Determining Student Impact Implementation Brief: Using Student Growth Percentiles, www.doe.mass.edu/edeval/ddm/GrowthPercentiles.pdf
+\vspace{0.5 cm} 
+\bibitem{ccsso1} Progress on Development and Reporting Measures of Student Growth, The Council of Chief State School Officers (2010),\hfill 
+\linebreak www.ccsso.org/Documents/2010/State\_Growth\_Models\_for\%20School\_2010.pdf
+\vspace{0.5 cm}   
+\bibitem{mctr} 2011 MCAS and MCAS-Alt Technical Report, \hfill, 
+\linebreak Massachusetts Department of Elementary and Secondary Education,   
+\linebreak www.mcasservicecenter.com/documents/MA/Technical\%20Report/TechReport\_2011.htm
+\vspace{0.5 cm}  
+\bibitem{neost} Nering, M., \& Ostini, R. (2010). Handbook of polytomous item response theory models. New York:
+Routledge.
+\end{thebibliography}
+
+\end{document}
