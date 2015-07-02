@@ -65,7 +65,7 @@ The issues of validity and reliability are significantly more complicated with t
 \par\vspace{0.3 cm}
 It is generally acknowledged that more research on these measures is needed, and this paper is motivated by that fact.
 \section{The Colorado or Student Growth Percentile Model}
-While there is not a consensus on which of the many proposed methods of determining student "growth", a number of states have adopted the Student Growth Percentile (SGP) model developed by Colorado as part of a federally funded pilot program.  
+While there is no consensus on the best way of determining student (or even definint) "growth", a number of states have adopted the Student Growth Percentile (SGP) model developed by Colorado as part of a pilot program funded by the U.S. Department of Education.  
 \par\vspace{0.3 cm}
 This is due in part to a number of desirable theoretical properties this measure possesses, such as invariance to monotonic changes in scale, robustness to outliers, and lack of correlation with prior achievement \cite{bb3}.  Another reason is the availability of free open-source software in the form of the SGP package for the R statistical system \cite{bb2}.   
 \par\vspace{0.3 cm}
@@ -95,12 +95,9 @@ relating prior student achievement to current achievement for each percentile."}
 \par\vspace{0.3 cm}
 So, depending on the student's scaled score on the current year's test, one of 100 quantile regression models is selected.  The percentile corresponding to the model with the largest predicted scaled score that does not exceed the student's scaled score for the current year is defined as the Student Growth Percentile for that student. 
 \par\vspace{0.3 cm}
-Any change in the current scaled score will result in a different quantile regression model being used.  Furthermore, the computations for even a single student require the scores for the entire grade cohort (70,000 students).  
+A change in the most recent year's scaled score will usually result in a different quantile regression model being used.  Furthermore, the computations for even a single student require the scores for the entire grade cohort (70,000 students).  
 \par\vspace{0.3 cm}
-
-We find it troubling that the end result of this complicated process is often presented with no measure of its uncertainty. 
-\par\vspace{0.3 cm}
-Our objective in this study is to use simulation to estimate the variability of the SGP measures, using the Iterm Response Theory (IRT) model from the Massachusetts Comprehensive Assessment System (MCAS) as the data generating process in a hypothetical zero growth scenario.
+Our objective in this study is to use simulation to estimate the variability of aggregated SGP measures, using the Iterm Response Theory (IRT) model from the Massachusetts Comprehensive Assessment System (MCAS) as the data generating process.
 \par\vspace{0.3 cm}
 
 \section{The Data Generating Process}
