@@ -1,0 +1,40 @@
+\documentclass{article}
+
+\begin{document}
+Clear the workspace:
+<<>>=
+rm(list=ls())                                       #clear work area
+@
+Specify the number of classes and the class size:
+<<>>=
+#this combination will produce about 70,000 students
+classes=2413      
+classize=29
+@
+Specify the proportion of the variance of theta due to students
+<<>>=
+pstu=0.93
+sigma_e=1
+sigma_t=sqrt((1-pstu)/pstu)
+sigma_t
+sigma_e^2/(sigma_e^2+sigma_t^2)
+@
+Now build the thetas data frame:
+<<>>=
+ID=seq(from=1,to=classes*classize)
+tgrade3=rep(rnorm(classes,0,sigma_t),each=classize)              #parameters for third grade teachers
+tgrade4=rep(rnorm(classes,0,sigma_t),each=classize)              #parameters for fourth grade teachers
+tgrade5=rep(rnorm(classes,0,sigma_t),each=classize)              #parameters for fourth grade teachers
+e=rnorm(classes*classize,0,sigma_e)                              #student level abilities
+theta1=tgrade3+e
+theta2=tgrade3+tgrade4+e
+theta3=tgrade3+tgrade4+tgrade5+e
+thetas=data.frame(ID,theta1,theta2,tgrade3,tgrade4,tgrade5,e)
+str(thetas)
+save(thetas,file="Rdata/mixed01c.Rdata")
+@
+
+
+
+
+\end{document}
