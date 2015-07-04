@@ -1,0 +1,92 @@
+\documentclass{article}
+
+\begin{document}
+Clear the workspace:
+<<>>=
+rm(list=ls())                                       #clear work area
+@
+Specify the target subdirectory:
+<<>>=
+datadir="mixed01"
+@
+Read the names of the files in the target subdirectory into a list:
+<<>>=
+files=list.files(datadir)                           #list files in target subdirectory
+n=length(files)                                     #count of files 
+#n=4
+print(n)
+@
+Read the files from the target directory and extract the growth scores (SGP), constructing a new dataframe with one column for the growth scores in each file: 
+<<>>=
+for (i in 1:n){                                     #read each file and extract SGP values
+  fname=paste(datadir,"/",files[[i]],sep="")     #file to load
+  load(fname)
+  if(i==1){                                         #initialize data frame with column of levels
+    df=data.frame(seq(1,nrow(MCAS_sgp$Panel_Data)))
+    colnames(df)=c("ID")
+  }
+  df=cbind(df,MCAS_sgp$SGPercentiles$MATHEMATICS.2010$SGP)   #add column for SGP values
+}
+str(df)  
+ncol(df)
+load("Rdata/mixed01a.Rdata")
+classize=29
+str(thetas)
+mean(thetas$e)
+sd(thetas$e)
+teachers=nrow(thetas)/classize
+teachers
+tfact=as.factor(rep(seq(1:teachers),each=classize))
+thetas=cbind(thetas,tfact)
+str(thetas)
+df3=cbind(df,thetas)
+tn=1:teachers
+teff=thetas$tval[seq(from=1,to=nrow(thetas),by=classize)]
+str(teff)
+ceff=NULL
+for(j in 1:teachers){
+  lo=1+(j-1)*classize
+  hi=lo+classize-1
+  ceff=c(ceff,mean(thetas$e[lo:hi]))
+}
+str(ceff)
+df3=data.frame(tn,teff,ceff)
+for(j in 2:ncol(df)){
+  m=NULL
+  te=NULL
+  classe=NULL
+  for(k in 1:teachers){
+    lo=1+(k-1)*classize
+    hi=lo+classize-1
+    m=c(m,median(df[lo:hi,j]))
+  }
+#print(m)
+df3=cbind(df3,m)
+}
+str(df3)
+@
+Plot median growth against teacher effect:
+<<>>=
+library(ggplot2)
+df4=df3[,1:4]
+str(df4)
+p=ggplot(df4,aes(x=teff,y=m))
+p+geom_point(size=0.8)
+@
+Compute the mean of the median growth scores for each class
+<<>>=
+means=apply(df3[,5:ncol(df3)],1,mean)   #compute vector of row means exclude first column
+df4=cbind(df4,means)
+str(df4)
+mean(df4$teff)
+sd(df4$teff)
+mean(df4$ceff)
+@
+Plot the mean of the median growth scores against teacher effect
+<<>>=
+library(ggplot2)
+p=ggplot(df4,aes(x=teff,y=means))
+p+geom_point(size=0.8)
+@
+
+\end{document}
