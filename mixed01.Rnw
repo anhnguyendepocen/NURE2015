@@ -1,0 +1,39 @@
+\documentclass{article}
+
+\begin{document}
+Clear the workspace:
+<<>>=
+rm(list=ls())                                       #clear work area
+@
+Specify the target subdirectory:
+<<>>=
+datadir="mixed01"
+@
+Read the 70k equally spaced normal abilities file:
+<<>>=
+load("Rdata/samplen70.Rdata")
+ls()
+@
+Read the names of the files in the target subdirectory into a list:
+<<>>=
+files=list.files(datadir)                           #list files in target subdirectory
+n=length(files)                                     #count of files 
+print(n)
+@
+Read the files from the target directory and extract the growth scores (SGP), constructing a new dataframe with one column for the growth scores in each file: 
+<<>>=
+for (i in 1:n){                                     #read each file and extract SGP values
+  fname=paste(datadir,"/",files[[i]],sep="")     #file to load
+  load(fname)
+  if(i==1){                                         #initialize data frame with column of levels
+    df=data.frame(seq(1,nrow(MCAS_sgp$Panel_Data)))
+    colnames(df)=c("ID")
+  }
+  df=cbind(df,MCAS_sgp$SGPercentiles$MATHEMATICS.2010$SGP)   #add column for SGP values
+}
+str(df)    
+@
+
+
+
+\end{document}
