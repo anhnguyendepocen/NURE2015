@@ -39,8 +39,9 @@ set.seed(seed)
 sample_file=args[[7]]                          #filename for ability parameters
 file_name=paste(paste("Rdata/",sample_file,sep=""),".Rdata",sep="")      #abilities data file
 print(file_name)
-load(file_name)                                #retrieve 70k cohort ability values
-nstu=length(thetas$theta1)                      #determine how many students there are
+load(file_name)                                 #retrieve 70k cohort ability values
+str(thetas)
+nstu=nrow(thetas)                              #determine how many students there are
 #
 years=2;                                       #how many years to generate
 #
@@ -52,14 +53,17 @@ GRADE_2011=rep(5,nstu)
 rdf=mcas('3',"2011","MTH",thetas$theta1)
 ori=rdf[rdf[,1]==0]    #scaled score has item number in column 1 = 0
 SS_2009=ori[2:length(ori)]  
+str(SS_2009)
 table(SS_2009)
 rdf=mcas('3',"2011","MTH",thetas$theta2)
 ori=rdf[rdf[,1]==0]    #scaled score has item number in column 1 = 0
 SS_2010=ori[2:length(ori)]  
 table(SS_2010)
+str(SS_2010)
 rdf=mcas('3',"2011","MTH",thetas$theta3)
 ori=rdf[rdf[,1]==0]    #scaled score has item number in column 1 = 0
 SS_2011=ori[2:length(ori)]  
+str(SS_2011)
 table(SS_2011)
 MCAS_wide=data.frame(IDcol,GRADE_2009,GRADE_2010,GRADE_2011,SS_2009,SS_2010,SS_2011)
 colnames(MCAS_wide)=c("ID","GRADE_2009","GRADE_2010","GRADE_2011","SS_2009","SS_2010","SS_2011")

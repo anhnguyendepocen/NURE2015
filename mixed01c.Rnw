@@ -29,7 +29,7 @@ e=rnorm(classes*classize,0,sigma_e)                              #student level 
 theta1=tgrade3+e
 theta2=tgrade3+tgrade4+e
 theta3=tgrade3+tgrade4+tgrade5+e
-thetas=data.frame(ID,theta1,theta2,tgrade3,tgrade4,tgrade5,e)
+thetas=data.frame(ID,theta1,theta2,theta3,tgrade3,tgrade4,tgrade5,e)
 str(thetas)
 save(thetas,file="Rdata/mixed01c.Rdata")
 @
