@@ -1,0 +1,191 @@
+\documentclass{amsart}
+
+\begin{document}
+\title{SGP Analytic Results}
+\maketitle
+\section*{Two-year Binomial Experiment}
+In this experiment, we simulate administering a hypothetical sequence of two standardized tests to a population of 10,000 students.  The first test is administered at the end of grade 3, the second at the end of grade 4.
+\par\vspace{0.3 cm}
+The level of ability of a student is given by a latent (meaning unobservable) parameter $\theta$ that takes a value in the open interval $(0,1)$.
+We denote the level of ability of student $i$ by $\theta_i$, $i=1,2,\ldots,10000$.
+\par\vspace{0.3 cm}
+Both tests consist of seven dichotomous questions.  Each question behaves like an independent Bernoulli trial with probability of success $\theta_i$.
+\par\vspace{0.3 cm}
+Denote the score received by student $i$ on question $j$ by $X_{ij}$.  The effective item response model for student $i$'s answer to question $j$ is:
+\[
+P(X_{ij}=1) = \theta_i\quad j=1,2,\ldots,7,\quad i=1,2,\ldots,10000
+\]
+This condition together with the independence assumption is sufficient to guarantee that the total score $X_i$ for all seven items for student $i$ has a binomial distribution with $n=7$ and $p=\theta_i$:
+\[
+P(X_i=k | \theta=\theta_i) = {7 \choose k}\theta_i^{k}(1-\theta_i)^{7-k}\quad k=0,1,2,\ldots,7
+\]
+\par\vspace{0.3 cm}
+We will assume that ability parameters have a uniform distribution in the population of students, so that the 10,000 theta values represent a random sample from a population with density function:
+\[
+f(\theta) = 1,\quad 0<\theta<1
+\]
+\subsection{Examining the Simulated Scores}
+Having previously run the SGP software to generate growth scores, we load the results of the SGP software and extract the "test" scores and SGP scores from it, and save them in a data frame called \texttt{mc}:
+<<>>=
+library(ggplot2)
+load("Rdata/binomial_SGP.Rnw_None_07182015162739.Rdata")       #load the simulated scores and growth measures
+load("Rdata/binomial_sgp.Rdata")                               #load the theta values
+#
+mc=cbind(MCAS_sgp$Panel_Data,MCAS_sgp$SGPercentiles$MATHEMATICS.2010)   #combine the "test" and SGP scores
+str(mc)                                                        #show the structure
+@
+The \texttt{mc} data frame has 10,000 rows and 10 columns.  The columns include:
+\begin{itemize}
+\item \texttt{SS\_2009} The number of correct (out of 7 possible) on the first binomial "test"
+\item \texttt{SS\_2010} The number of correct (out of 7 possible) on the second binomial "test"
+\item \texttt{SGP} The computed growth score returned by the SGP software
+\end{itemize}
+\par\vspace{0.3 cm}
+Next we examine the frequency distribution of the scores from the first binomial "test":
+<<>>=
+t2009=table(mc$SS_2009)
+print(t2009)
+@
+Notice that the counts are about evenly distributed, indicating each of the 8 possible scores may be equally likely.
+\par\vspace{0.3 cm}
+We can verify this by using the law of total probability,
+\[
+P(x=0) = \int_0^1{7\choose 0}\theta^0(1-\theta)^{7-0}\cdot f(\theta) d\theta = \int_0^1(1-\theta)^7d\theta = \frac{1}{8}
+\]
+\[
+P(x=1) = \int_0^1{7\choose 1}\theta^1(1-\theta)^{7-1}\cdot f(\theta) d\theta = \int_0^17\theta(1-\theta)^6d\theta = \frac{1}{8}
+\]
+\[
+P(x=2) = \int_0^1{7\choose 2}\theta^2(1-\theta)^{7-2}\cdot f(\theta) d\theta = \int_0^121\theta^2(1-\theta)^5d\theta = \frac{1}{8}
+\]
+\[
+P(x=3) = \int_0^1{7\choose 3}\theta^3(1-\theta)^{7-3}\cdot f(\theta) d\theta = \int_0^135\theta^3(1-\theta)^4d\theta = \frac{1}{8}
+\]
+\[
+P(x=4) = \int_0^1{7\choose 4}\theta^4(1-\theta)^{7-4}\cdot f(\theta) d\theta = \int_0^135\theta^4(1-\theta)^3d\theta = \frac{1}{8}
+\]
+\[
+P(x=5) = \int_0^1{7\choose 5}\theta^5(1-\theta)^{7-5}\cdot f(\theta) d\theta = \int_0^121\theta^5(1-\theta)^2d\theta = \frac{1}{8}
+\]
+\[
+P(x=6) = \int_0^1{7\choose 6}\theta^6(1-\theta)^{7-6}\cdot f(\theta) d\theta = \int_0^17\theta^6(1-\theta)^1d\theta = \frac{1}{8}
+\]
+\[
+P(x=7) = \int_0^1{7\choose 7}\theta^7(1-\theta)^{7-7}\cdot f(\theta) d\theta = \int_0^1\theta^7(1-\theta)^0d\theta = \frac{1}{8}
+\]
+\par\vspace{0.3 cm}
+We can also find the joint distribution of the two scores $(X_1,X_2)$.  For a given value of $\theta$, the joint probability that $X_1=x_1$ and $X_2=x_2$ is 
+\[
+P(X_1=x_1,X_2=x_2|\theta) = {7 \choose x_1}\theta^{x_1}(1-\theta)^{7-x_1}{7 \choose x_2}\theta^{x_2}(1-\theta)^{7-x_2}
+\]
+The probability that $X_1=X_2=0$ given that $\theta=\theta_i$ is:
+\[
+P(x_1=0,X_2=0|\theta=\theta_i) = {7\choose 0}\theta_i^0(1-\theta_i)^{7}\cdot{7\choose 0}\theta_i^0(1-\theta_i)^7 = (1-\theta_i)^{14}
+\]
+By the law of total probability, the probability of the event $X_1=X_2=0$ is obtained by integrating $f(\theta)$ times $P(X_1,X_2|\theta)$ over the range of values that $\theta$ takes $(0<\theta<1)$.  With the assumption of a uniform distribution for $\theta$, the density function is just $f(\theta)=1$ for all values of $\theta$.
+\[
+P(X_1=X_2=0) = \int_0^1(1-\theta)^{14}d\theta = \frac{1}{15}
+\]
+The cross-tabulation of the scores on the first and second test is:
+<<>>=
+t=table(mc$SS_2010,mc$SS_2009)
+print(t)
+@
+Since the probability of $(0,0)$ is $1/15$, we expect to see this score about 10,000/15 or 667 times, which is close to the simulation result.
+\par\vspace{0.3 cm}
+We are interested in verifying our conjecture that the SGP score is related to the conditional CDF:
+\[
+P(X_2\leq x_2 | X_1=x_1)
+\]
+To show this, we will need to compute conditional probabilities for each value of $X_2$ given that $X_1=x_1$.
+\par\vspace{0.3 cm}
+The conditional probability that $X_2=x_2$ given that $X_1=x_1$ and $\theta=\theta_i$ is defined as
+\[
+P(X_2=x_2 | X_1=x_1, \theta=\theta_i) = \frac{P(X_2=x_2 \cap X_1=x_1 | \theta=\theta_i)}{P(X_1=x_1|\theta=\theta_i)} 
+\]
+As before we use the law of total probability to get the overall conditional probability by integrating over $\theta$:
+\[
+P(X_2=x_2 \cap X_1=x_1) = \int_0^1P(X_2=x_2 \cap X_1=x_1 | \theta) f(\theta) d\theta
+\]
+Suppose $X_2=0$ and $X_1=0$.  The previous formula reduces to 
+\[
+P(X_2=0 \cap X_1=0) = \int_0^1(1-\theta)^{14} d\theta = \frac{1}{15}
+\]
+To get the conditional probability that $X_2=0$ given that $X_1=0$, we divide this by the probability that $X_1=0$, which is 1/8:
+\[
+P(X_2=0 | X_1=0) = \frac{1/15}{1/8} = \frac{8}{15} = 0.5333
+\]
+Similarly, to get the conditional probability that $X_2=1$ given that $X_1=0$, we compute
+\[
+P(X_2=1 \cap X_1=0) = \int_0^17\theta(1-\theta)^{6}(1-\theta)^7 d\theta = \frac{1}{30}
+\]
+then
+\[
+P(X_2=1 | X_1=0) = \frac{1/30}{1/8} = \frac{8}{30} = 0.2667
+\]
+Continuing in this fashion,
+\[
+P(X_2=2 \cap X_1=0) = \int_0^121\theta^2(1-\theta)^{5}(1-\theta)^7 d\theta = \frac{1}{65}
+\]
+then
+\[
+P(X_2=2 | X_1=0) = \frac{1/65}{1/8} = \frac{8}{65} = 0.1231
+\]
+Next
+\[
+P(X_2=3 \cap X_1=0) = \int_0^135\theta^3(1-\theta)^{4}(1-\theta)^7 d\theta = \frac{1}{156}
+\]
+then
+\[
+P(X_2=3 | X_1=0) = \frac{1/156}{1/8} = \frac{8}{156} = 0.05128
+\]
+Then
+\[
+P(X_2=4 \cap X_1=0) = \int_0^135\theta^4(1-\theta)^{3}(1-\theta)^7 d\theta = \frac{1}{429}
+\]
+then
+\[
+P(X_2=4 | X_1=0) = \frac{1/429}{1/8} = \frac{8}{429} = 0.01865
+\]
+And finally
+\[
+P(X_2=5 \cap X_1=0) = \int_0^121\theta^5(1-\theta)^{2}(1-\theta)^7 d\theta = \frac{1}{1430}
+\]
+then
+\[
+P(X_2=5 | X_1=0) = \frac{1/1430}{1/8} = \frac{8}{1430} = 0.00559
+\]
+These values will be sufficient to illustrate our point.
+\par\vspace{0.3 cm}
+First we want to list the SGP scores when $X_1=0$:
+<<>>=
+mc0=subset(mc,SS_2009==0)      #select rows with X1=SS_2009 equal to zero
+table(mc0$SGP,mc0$SS_2010)     #display frequencies for X2=SS_2010
+@
+The SGP scores when $X_1=0$ for the values of $X_2$ are:
+\par\vspace{0.3 cm}
+\begin{tabular}{lr}
+$X_2=0$ & 0\\
+$X_2=1$ & 54\\
+$X_2=2$ & 80\\
+$X_2=3$ & 92\\
+$X_2=4$ & 97\\
+$X_2=5$ & 99
+\end{tabular}
+\par\vspace{0.3 cm}
+Now we can tabulate the conditional probabilities, the conditional CDF, and the computed SGP score:
+\par\vspace{0.3 cm}
+\begin{tabular}{lrrr}
+$P(X_2=0|X_1=0)$ & 0.5333 & 0.5333 & 0\\
+$P(X_2=1|X_1=0)$ & 0.2667 & 0.8000 & 54\\
+$P(X_2=2|X_1=0)$ & 0.1231 & 0.9231 & 80\\
+$P(X_2=3|X_1=0)$ & 0.05128 & 0.9744 & 92\\
+$P(X_2=4|X_1=0)$ & 0.01865 & 0.9930 & 97\\
+$P(X_2=5|X_1=0)$ & 0.00559 & 0.9931 & 99
+\end{tabular}
+\par\vspace{0.3 cm}
+As expected, the growth scores when $X_2=x_2$ given that $X_1=0$ match
+\[
+P(X_2<x_2 | X_1=0)
+\]
+\end{document}
